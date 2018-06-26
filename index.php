@@ -22,6 +22,7 @@
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");	
 						displayresult('author',ui.item.value);		
+						$(".Header").html(this.value);
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -40,7 +41,8 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('subject',ui.item.value);			
+						displayresult('subject',ui.item.value);		
+						$(".Header").html(this.value);	
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -59,7 +61,8 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('title',ui.item.value);			
+						displayresult('title',ui.item.value);	
+						$(".Header").html(this.value);		
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -78,7 +81,8 @@
 						$('#title').val("");
 						$('#title').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('institution',ui.item.value);						
+						displayresult('institution',ui.item.value);	
+						$(".Header").html(this.value);					
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -142,6 +146,7 @@
 		<div class="intro-header">
 			<div class="container">
 				<div class="row">
+					<div class="Header"></div>
 					<div class="content-div">
 						<div class="col-lg-12 categorydiv">
 							<div class="col-lg-12"><p style="color: #000000;font-size: 16px;padding-left: 15px;">Select search conditions</p></div>

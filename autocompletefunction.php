@@ -40,7 +40,7 @@ if($From=="subject"){
 	echo json_encode($return_arr);
 }
 if($From=="title"){
-	$sql="SELECT dc_title FROM `books` WHERE LOWER(replace(dc_title,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' GROUP BY LOWER(replace(dc_title,' ','')) ORDER BY `books`.`dc_title` ASC LIMIT 0,100";
+	$sql="select DISTINCT dc_title from `books` where LOWER(replace(dc_title,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' limit 0,100";
 	$result = mysqli_query($conn,$sql);
 	$numofrows=mysqli_num_rows($result);
 	if($numofrows!=0)
