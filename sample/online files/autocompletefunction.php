@@ -4,7 +4,7 @@ $From=$_GET['From'];
 $Value=$_GET['Value'];
 $return_arr = array(); 
 if($From=="author"){
-	$sql="SELECT dc_contributor_author FROM `books` WHERE LOWER(replace(dc_contributor_author,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_contributor_author<>'' GROUP BY LOWER(replace(dc_contributor_author,' ','')) limit 0,20";
+	$sql="SELECT dc_contributor_author FROM `books` WHERE LOWER(replace(dc_contributor_author,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_contributor_author<>'' GROUP BY LOWER(replace(dc_contributor_author,' ','')) limit 0,100";
 	$result = mysqli_query($conn,$sql);
 	$numofrows=mysqli_num_rows($result);
 	if($numofrows!=0)
@@ -22,7 +22,7 @@ if($From=="author"){
 	echo json_encode($return_arr);
 }
 if($From=="subject"){
-	$sql="SELECT dc_subject_keywords FROM `books` WHERE LOWER(replace(dc_subject_keywords,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_subject_keywords<>'' GROUP BY LOWER(replace(dc_subject_keywords,' ','')) limit 0,20";
+	$sql="SELECT dc_subject_keywords FROM `books` WHERE LOWER(replace(dc_subject_keywords,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_subject_keywords<>'' GROUP BY LOWER(replace(dc_subject_keywords,' ','')) limit 0,100";
 	$result = mysqli_query($conn,$sql);
 	$numofrows=mysqli_num_rows($result);
 	if($numofrows!=0)
@@ -40,7 +40,7 @@ if($From=="subject"){
 	echo json_encode($return_arr);
 }
 if($From=="title"){
-	$sql="select dc_title from `books` where LOWER(replace(dc_title,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_title<>'' GROUP BY LOWER(replace(dc_title,' ','')) limit 0,20";
+	$sql="select dc_title from `books` where LOWER(replace(dc_title,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_title<>'' GROUP BY LOWER(replace(dc_title,' ','')) limit 0,100";
 	$result = mysqli_query($conn,$sql);
 	$numofrows=mysqli_num_rows($result);
 	if($numofrows!=0)
@@ -57,7 +57,7 @@ if($From=="title"){
 	echo json_encode($return_arr);
 }
 if($From=="institution"){
-	$sql="SELECT dc_source_library FROM `books` WHERE LOWER(replace(dc_source_library,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_source_library<>'' GROUP BY LOWER(replace(dc_source_library,' ','')) limit 0,20";
+	$sql="SELECT dc_source_library FROM `books` WHERE LOWER(replace(dc_source_library,' ','')) like '%".strtolower(preg_replace('/\s+/', '', $_GET['term']))."%' and dc_source_library<>'' GROUP BY LOWER(replace(dc_source_library,' ','')) limit 0,100";
 	$result = mysqli_query($conn,$sql);
 	$numofrows=mysqli_num_rows($result);
 	if($numofrows!=0)

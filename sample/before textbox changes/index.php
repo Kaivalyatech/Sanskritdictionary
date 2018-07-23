@@ -21,7 +21,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");	
-						displayresult('author',ui.item.value,"");		
+						displayresult('author',ui.item.value);		
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -40,7 +40,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('subject',ui.item.value,"");		
+						displayresult('subject',ui.item.value);		
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -59,7 +59,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('title',ui.item.value,"");			
+						displayresult('title',ui.item.value);			
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -78,30 +78,19 @@
 						$('#title').val("");
 						$('#title').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('institution',ui.item.value,"");	
+						displayresult('institution',ui.item.value);	
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
 				});
 			});		
 			
-			function displayresult(WhichField,Value,Value1){
+			function displayresult(WhichField,Value){
 				if(Value!=""){
 					$(".modal").css('display','block');
-					if(WhichField=="author"){
-						var WhichCategory="Author";
-					}else if(WhichField=="subject"){
-						var WhichCategory="Subject";
-					}else if(WhichField=="title"){
-						var WhichCategory="Title";
-					}else if(WhichField=="institution"){
-						var WhichCategory="Institution";
-					}else{
-						var WhichCategory="Date of citation";
-					}
-					//$(".searchterm").html('Your search "'+Value+'"');
+					$(".Header").html('Search term - "'+Value+'"');
 				}else{
-					$(".searchterm").html('');
+					$(".Header").html('');
 				}
 				if(WhichField=="mainsearch"){
 					$('#author').val("");	
@@ -113,9 +102,8 @@
 					$('#institution').val("");
 					$('#institution').closest('.input').removeClass('input--filled');
 				}
-				//alert("value1--"+Value1);
 				$.ajax({
-					url: 'functions.php?WhichField='+WhichField+'&Value='+encodeURIComponent(Value)+'&Value1='+encodeURIComponent(Value1),
+					url: 'functions.php?WhichField='+WhichField+'&Value='+encodeURIComponent(Value),
 					success: function (data) {
 						//alert(data);
 						$('#searchresult').html(data);
@@ -126,27 +114,6 @@
 						}
 					}
 				});
-			}
-			
-			function reset(){
-				$('#author').val("");	
-				$('#author').closest('.input').removeClass('input--filled');
-				$('#subject').val("");	
-				$('#subject').closest('.input').removeClass('input--filled');
-				$('#title').val("");
-				$('#title').closest('.input').removeClass('input--filled');
-				$('#institution').val("");
-				$('#institution').closest('.input').removeClass('input--filled');
-				$('.search').val("");
-				//$('#dateofcitation').val("0");
-				$('#From').css("left","100%");
-				$('.ui-widget-header').css("left","0%");
-				$('.ui-widget-header').css("width","100%");
-				$('#To').css("left","0%");
-				$('#date').val("0 - 11966");
-				$('.range-slider__value').html("0");
-				$('#searchresult').html("");
-				$('.searchterm').html("");
 			}								
 		</script>
 	</head>
@@ -162,8 +129,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a><h3 style="float: left;margin-top: 25px;">DLI Mirror</h3>
-					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value,'')"></div>
+					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a>
+					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value)"></div>
 					<p class="copyright" style="float:right;font-weight: normal;text-align: right;">A mirror of the Digital Library of India | <a href="http://www.dli.ernet.in/static/dli/copyright.html">DLI Copyright policy </a><img src="img/jaja.7e363e1.png" style="width: 10%;"></p> 
 				</div>
 			   
@@ -186,80 +153,74 @@
 		<div class="intro-header">
 			<div class="container">
 				<div class="row">
-					<div class="searchterm"></div>
+					<div class="Header"></div>
 					<div class="content-div">
 						<div class="col-lg-12 categorydiv">
-							
-							<!--<button name="reset" value="Reset"></button>-->
-							<div class="col-lg-8-5" id="searchresult"></div>   
-							<div class="modal"></div>
-							
-							<div class="col-lg-3 filterdiv">
-								<p style="color: #000000;font-size: 16px;padding-top: 15px;float: left;margin-right: 10px;">Select search conditions</p>
-								<input value="RESET" style="float: left;" type="button" onclick="reset()">
+							<div class="col-lg-12"><p style="color: #000000;font-size: 16px;padding-left: 15px;">Select search conditions</p></div>
+							<div class="col-lg-2-5">
 								<input type="hidden" name="authorid" id="authorid">
-								<span class="input input--hoshi">
-									<input type="text" name="author" id="author" class="input__field input__field--hoshi">
-									<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="author">
-										<span class="input__label-content input__label-content--hoshi">Authors</span>
+								<span class="input input--madoka">
+									<input type="text" name="author" id="author" class="input__field input__field--madoka">
+									<label class="input__label input__label--madoka" for="author">
+										<svg class="graphic graphic--madoka" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
+											<path d="m0,0l404,0l0,77l-404,0l0,-77z"/>
+										</svg>
+										<span class="input__label-content input__label-content--madoka">Authors</span>
 									</label>
 								</span>
-								
-								<input type="hidden" name="subjectid" id="subjectid">
-								<span class="input input--hoshi">
-									<input type="text" name="subject" id="subject" class="input__field input__field--hoshi">
-									<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="subject">
-										<span class="input__label-content input__label-content--hoshi">Subjects</span>
-									</label>
-								</span>
-								<input type="hidden" name="titleid" id="titleid">
-								<span class="input input--hoshi">
-									<input type="text" name="title" id="title" class="input__field input__field--hoshi">
-									<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="title">
-										<span class="input__label-content input__label-content--hoshi">Titles</span>
-									</label>
-								</span>
-								<input type="hidden" name="institutionid" id="institutionid">
-								<span class="input input--hoshi">
-									<input type="text" name="institution" id="institution" class="input__field input__field--hoshi">
-									<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="institution">
-										<span class="input__label-content input__label-content--hoshi">Institutions</span>
-									</label>
-								</span>
-								
-								<p style="color: #444;margin-top: 26px;font-size: 17px;padding-left: 2px;margin-bottom: 5px">
-									<label for="date">Date Filter&nbsp;&nbsp;&nbsp;</label>
-									<input id="date" readonly="" style="border:0; color:#f6931f; font-weight:bold;" type="text">
-								</p>
-								<div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="From" style="left: 15%;"></span>
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="To" style="left: 60%;"></span>
-								</div>														
 							</div>
-							
+							<div class="col-lg-2-5">
+								<input type="hidden" name="subjectid" id="subjectid">
+								<span class="input input--madoka">
+									<input type="text" name="subject" id="subject" class="input__field input__field--madoka">
+									<label class="input__label input__label--madoka" for="subject">
+										<svg class="graphic graphic--madoka" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
+											<path d="m0,0l404,0l0,77l-404,0l0,-77z"/>
+										</svg>
+										<span class="input__label-content input__label-content--madoka">Subjects</span>
+									</label>
+								</span>
+							</div>
+							<div class="col-lg-2-5">
+								<input type="hidden" name="titleid" id="titleid">
+								<span class="input input--madoka">
+									<input type="text" name="title" id="title" class="input__field input__field--madoka">
+									<label class="input__label input__label--madoka" for="title">
+										<svg class="graphic graphic--madoka" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
+											<path d="m0,0l404,0l0,77l-404,0l0,-77z"/>
+										</svg>
+										<span class="input__label-content input__label-content--madoka">Titles</span>
+									</label>
+								</span>
+							</div>
+							<div class="col-lg-2-5">
+								<input type="hidden" name="institutionid" id="institutionid">
+								<span class="input input--madoka">
+									<input type="text" name="institution" id="institution" class="input__field input__field--madoka">
+									<label class="input__label input__label--madoka" for="institution">
+										<svg class="graphic graphic--madoka" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
+											<path d="m0,0l404,0l0,77l-404,0l0,-77z"/>
+										</svg>
+										<span class="input__label-content input__label-content--madoka">Institutions</span>
+									</label>
+								</span>
+							</div>
+							<div class="col-lg-2-5">
+								<p style="color: #63223c;margin-top: 26px;font-size: 17px;padding-left: 1em;margin-bottom: 5px">Date Filter</p>
+								<div class="range-slider">
+									<input class="range-slider__range" type="range" value="0" min="0" max="<?php echo $row['Maxcitationvalue'];?>">
+									<span class="range-slider__value">0</span>
+								</div>
+							</div>
+							<button name="reset" value="Reset"></button>
 						</div>
-						
+						<div class="col-lg-12" id="searchresult"></div>   
+						<div class="modal"></div>
 					</div>
 				</div>
 			</div>
 			<!-- /.container -->
 		</div>
-		<script>
-			$( function() {
-				$( "#slider-range" ).slider({
-					range: true,
-					min: 0,
-					max: 11966,
-					values: [ 0, 11966 ],
-					slide: function( event, ui ) {
-						$( "#date" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-						displayresult('rangefilter',ui.values[ 0 ],ui.values[ 1 ]);
-					}
-				});
-				$( "#date" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-					" - " + $( "#slider-range" ).slider( "values", 1 ) );					
-			} );
-		</script>
 		<!-- /.intro-header -->
 		<!-- /.Page Content -->
 
@@ -319,7 +280,7 @@
 			  value = $('.range-slider__value');
 				
 			  slider.each(function(){
-				
+
 				value.each(function(){
 				  var value = $(this).prev().attr('value');
 				  $(this).html(value);
@@ -336,7 +297,7 @@
 					$('#institution').val("");
 					$('#institution').closest('.input').removeClass('input--filled');
 					$('.search').val("");
-					displayresult('rangefilter',this.value,"");
+					displayresult('rangefilter',this.value);
 				});
 			  });
 			};
@@ -346,6 +307,6 @@
 				//alert(Id);
 				window.open('bookpage.php?Id='+Id);
 			}
-		</script>	
+		</script>		
 	</body>
 </html>

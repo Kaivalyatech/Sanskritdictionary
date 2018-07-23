@@ -87,7 +87,7 @@
 			
 			function displayresult(WhichField,Value,Value1){
 				if(Value!=""){
-					$(".modal").css('display','block');
+				//	$(".modal").css('display','block');
 					if(WhichField=="author"){
 						var WhichCategory="Author";
 					}else if(WhichField=="subject"){
@@ -99,7 +99,7 @@
 					}else{
 						var WhichCategory="Date of citation";
 					}
-					//$(".searchterm").html('Your search "'+Value+'"');
+					$(".searchterm").html('Search term - '+WhichCategory+' : "'+Value+'"');
 				}else{
 					$(".searchterm").html('');
 				}
@@ -117,12 +117,12 @@
 				$.ajax({
 					url: 'functions.php?WhichField='+WhichField+'&Value='+encodeURIComponent(Value)+'&Value1='+encodeURIComponent(Value1),
 					success: function (data) {
-						//alert(data);
+						alert(data);
 						$('#searchresult').html(data);
 						if(Value!=""){
-							$( ".modal" ).delay( 800 ).fadeIn( "slow", function() {
-								$(this).css('display','none');
-							});
+							//$( ".modal" ).delay( 800 ).fadeIn( "slow", function() {
+								//$(this).css('display','none');
+							//});
 						}
 					}
 				});
@@ -138,12 +138,7 @@
 				$('#institution').val("");
 				$('#institution').closest('.input').removeClass('input--filled');
 				$('.search').val("");
-				//$('#dateofcitation').val("0");
-				$('#From').css("left","100%");
-				$('.ui-widget-header').css("left","0%");
-				$('.ui-widget-header').css("width","100%");
-				$('#To').css("left","0%");
-				$('#date').val("0 - 11966");
+				$('#dateofcitation').val("0");
 				$('.range-slider__value').html("0");
 				$('#searchresult').html("");
 				$('.searchterm').html("");
@@ -162,8 +157,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a><h3 style="float: left;margin-top: 25px;">DLI Mirror</h3>
-					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value,'')"></div>
+					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a>
+					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value,"")"></div>
 					<p class="copyright" style="float:right;font-weight: normal;text-align: right;">A mirror of the Digital Library of India | <a href="http://www.dli.ernet.in/static/dli/copyright.html">DLI Copyright policy </a><img src="img/jaja.7e363e1.png" style="width: 10%;"></p> 
 				</div>
 			   
@@ -189,12 +184,7 @@
 					<div class="searchterm"></div>
 					<div class="content-div">
 						<div class="col-lg-12 categorydiv">
-							
-							<!--<button name="reset" value="Reset"></button>-->
-							<div class="col-lg-8-5" id="searchresult"></div>   
-							<div class="modal"></div>
-							
-							<div class="col-lg-3 filterdiv">
+							<div class="col-lg-3">
 								<p style="color: #000000;font-size: 16px;padding-top: 15px;float: left;margin-right: 10px;">Select search conditions</p>
 								<input value="RESET" style="float: left;" type="button" onclick="reset()">
 								<input type="hidden" name="authorid" id="authorid">
@@ -232,11 +222,19 @@
 									<input id="date" readonly="" style="border:0; color:#f6931f; font-weight:bold;" type="text">
 								</p>
 								<div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="From" style="left: 15%;"></span>
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="To" style="left: 60%;"></span>
-								</div>														
+									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 15%;"></span>
+									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 60%;"></span>
+								</div>
+								
+								<p style="color: #444;margin-top: 26px;font-size: 17px;padding-left: 2px;margin-bottom: 5px">Date Filter</p>
+								<div class="range-slider">
+									<input class="range-slider__range" type="range" value="0" min="0" max="<?php echo $row['Maxcitationvalue'];?>" step="1" id="dateofcitation">
+									<span class="range-slider__value">0</span>
+								</div>
 							</div>
-							
+							<!--<button name="reset" value="Reset"></button>-->
+							<div class="col-lg-9" id="searchresult"></div>   
+							<div class="modal"></div>
 						</div>
 						
 					</div>
@@ -346,6 +344,6 @@
 				//alert(Id);
 				window.open('bookpage.php?Id='+Id);
 			}
-		</script>	
+		</script>		
 	</body>
 </html>

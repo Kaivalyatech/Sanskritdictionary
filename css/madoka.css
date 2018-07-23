@@ -1,0 +1,105 @@
+/* Madoka input box css starts */
+.input {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	margin: 1em;
+	/*max-width: 350px;*/
+	width: calc(100%);
+	vertical-align: top;
+}
+.input__field {
+	position: relative;
+	display: block;
+	float: right;
+	padding: 1em;
+	width: 60%;
+	border: none;
+	border-radius: 0;
+	background: #f0f0f0;
+	color: #aaa;
+	font-weight: bold;
+	font-size: 16px;
+	-webkit-appearance: none;
+}
+.input__field:focus {
+	outline: none;
+}
+.input__label {
+	display: inline-block;
+	float: right;
+	padding: 0 1em;
+	width: 40%;
+	color: #6a7989;
+	font-weight: bold;
+	font-size: 70.25%;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.input__label-content {
+	position: relative;
+	display: block;
+	padding: 0.6em 0 0em;
+	width: 100%;
+	font-size: 17px;
+}
+.graphic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	fill: none;
+}
+.icon {
+	color: #ddd;
+	font-size: 150%;
+}
+.input--madoka {
+	margin: 1.1em;
+}
+.input__field--madoka {
+	width: 100%;
+	background: transparent;
+	color: #63223c;
+}
+.input__label--madoka {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	color: #63223c;
+	text-align: left;
+	cursor: text;
+}
+.input__label-content--madoka {
+	-webkit-transform-origin: 0% 50%;
+	transform-origin: 0% 50%;
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: transform 0.3s;
+}
+.graphic--madoka {
+-webkit-transform: scale3d(1, -1, 1);
+transform: scale3d(1, -1, 1);
+-webkit-transition: stroke-dashoffset 0.3s;
+transition: stroke-dashoffset 0.3s;
+	pointer-events: none;
+	stroke: #63223c;
+	stroke-width: 4px;
+	stroke-dasharray: 962;
+	stroke-dashoffset: 558;
+}
+.input__field--madoka:focus + .input__label--madoka,.input--filled .input__label--madoka {
+	cursor: default;
+	pointer-events: none;
+}
+.input__field--madoka:focus + .input__label--madoka .graphic--madoka,.input--filled .graphic--madoka {
+	stroke-dashoffset: 0;
+}
+.input__field--madoka:focus + .input__label--madoka .input__label-content--madoka,.input--filled .input__label-content--madoka {
+	-webkit-transform: scale3d(0.81, 0.81, 1) translate3d(0, -2.5em, 0);
+	transform: scale3d(0.81, 0.81, 1) translate3d(0, -2.5em, 0);
+}

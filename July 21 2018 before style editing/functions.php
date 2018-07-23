@@ -1,7 +1,6 @@
 <?php	
 include "conn.php";
 $Value=$_GET['Value'];
-$Value1=$_GET['Value1'];
 $WhichField=$_GET['WhichField'];
 //echo "Value--".$Value."<br>";
 //echo "WhichField--".$WhichField."<br>";
@@ -77,16 +76,6 @@ if($WhichField=="author"){
 
 do {
 	if($Value!=""){
-		/*if($Value1!=""){
-			$response = $service->files->listFiles(array(
-				'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value>='".(int) $Value."'}",
-				//'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value between '".$Value."' and '".$Value1."'}",
-				//'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value between 100 and 12000}",
-				'spaces' => 'drive',
-				'pageToken' => $pageToken,
-				'fields' => 'nextPageToken, files(id, name)',
-			));
-		}else*/ 
 		if($keyword){
 			$response = $service->files->listFiles(array(
 				'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value='".$Value."'}",
@@ -109,40 +98,32 @@ do {
 			$FileStr.="'".$file->id."'";	
 		}
 		//echo "file string=".$FileStr;
-		$sql="SELECT id,dc_title, dc_contributor_author, google_drive_id FROM books WHERE `google_drive_id` IN (".$FileStr.")";
+		$sql="SELECT dc_title, dc_contributor_author, google_drive_id FROM books WHERE `google_drive_id` IN (".$FileStr.")";
 		$result = mysqli_query($conn,$sql);
-		$Noofrows = mysqli_num_rows($result);
-		if(sizeof($response->files)!=0){
-			while ($row = $result->fetch_array()){	
-				//print_r($row);
-				//echo "<br><br>";
-				$a="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
-				$b=fopen($a, 'r');
-				//echo "b=".$b;
-				$ImageClass="";
-				if ($b) {
-					$ImagePath="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
-				} else {
-					$ImagePath="img/pdf2.png";
-					$ImageClass="PdfImage";
-				}
-				//echo "image=".$ImagePath;
-				//echo "<br><br>";
-				if($row['dc_contributor_author']){
-					$Author="by ".$row['dc_contributor_author'];
-				}
-				
-				echo '<div class="wholediv"><div class="bookdiv"><img src="'.$ImagePath.'" class="'.$ImageClass.'" onclick='.'"onclick=OpenFile(\''. $row['google_drive_id'].'\');"'.' /><div class="text"><img src="img/pdf2.png">&nbsp;&nbsp;'.$row['id'].'-'.$row['dc_title'].'</div></div><div class="textdiv">'.$row['dc_title'].'<br>'.$Author.'</div></div>';
+		while ($row = $result->fetch_array()){	
+			//print_r($row);
+			//echo "<br><br>";
+			$a="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
+			$b=fopen($a, 'r');
+			//echo "b=".$b;
+			
+			if ($b) {
+				$ImagePath="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
+			} else {
+				$ImagePath="img/empty.png";
 			}
+			//echo "image=".$ImagePath;
+			//echo "<br><br>";
+			
+			echo '<div class="bookdiv"><img src="'. $ImagePath.'" onclick='.'"onclick=OpenFile(\''. $row['google_drive_id'].'\');"'.' /><div class="text">'.$row['dc_contributor_author'].'<br>'.$row['dc_title'].'</div></div>';
 		}
-		$StringValue='"'.$Value.'"';
-		if($Noofrows==0){
-			echo "<script>$('#searchresult').css('height','567px');$('.searchterm').html('Your search ".$StringValue." matches 0 documents.');</script>";
+		if(sizeof($response->files)==0){
+			echo "<script>$('#searchresult').css('height','567px');</script>";
 			echo "<div class='emptydiv'>No Data Found</div>";		
-		}else if($Noofrows<6){
-			echo "<script>$('#searchresult').css('height','567px');$('.searchterm').html('Your search ".$StringValue." matches ".$Noofrows." documents.');</script>";
+		}else if(sizeof($response->files)<6){
+			echo "<script>$('#searchresult').css('height','567px');$('.searchterm').append(' <br>Search result - ".sizeof($response->files)."');</script>";
 		}else{
-			echo "<script>$('#searchresult').css('height','auto');$('.searchterm').html('Your search ".$StringValue." matches ".$Noofrows." documents.');</script>";
+			echo "<script>$('#searchresult').css('height','auto');$('.searchterm').append(' <br>Search result - ".sizeof($response->files)."');</script>";
 		}
 		
 		$pageToken = $repsonse->pageToken;

@@ -1,7 +1,6 @@
 <?php	
 include "conn.php";
 $Value=$_GET['Value'];
-$Value1=$_GET['Value1'];
 $WhichField=$_GET['WhichField'];
 //echo "Value--".$Value."<br>";
 //echo "WhichField--".$WhichField."<br>";
@@ -77,16 +76,6 @@ if($WhichField=="author"){
 
 do {
 	if($Value!=""){
-		/*if($Value1!=""){
-			$response = $service->files->listFiles(array(
-				'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value>='".(int) $Value."'}",
-				//'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value between '".$Value."' and '".$Value1."'}",
-				//'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value between 100 and 12000}",
-				'spaces' => 'drive',
-				'pageToken' => $pageToken,
-				'fields' => 'nextPageToken, files(id, name)',
-			));
-		}else*/ 
 		if($keyword){
 			$response = $service->files->listFiles(array(
 				'q' => "'0B7JhzNLs-FQEeUdMYTdoSDhhbjA' in parents and properties has { key='".$keyword."' and value='".$Value."'}",
@@ -102,52 +91,31 @@ do {
 				'fields' => 'nextPageToken, files(id, name)',
 			));
 		}
-		$FileStr="";
 		foreach ($response->files as $file) {
-		    if ($FileStr!="")
-				$FileStr.=",";
-			$FileStr.="'".$file->id."'";	
+			$sql="SELECT dc_title, dc_contributor_author, google_drive_id FROM books WHERE `google_drive_id` IN ('".$file->id."')";
+			$result = mysqli_query($conn,$sql);
+			$row=mysqli_fetch_assoc($result);
+			
+			/*$file_headers = get_headers('https://drive.google.com/thumbnail?id='.$file->id);			
+			if ($file_headers[0] == 'HTTP/1.0 404 Not Found') {
+				$ImagePath="img/empty.png";
+			} else {
+				$ImagePath="https://drive.google.com/thumbnail?id=".$file->id;
+			}*/
+			
+			echo '<div class="bookdiv"><img src="https://drive.google.com/thumbnail?id='.$file->id.'" onclick='.'"onclick=OpenFile(\''.$file->id.'\');"'.' /><div class="text">'.$row['dc_contributor_author'].'<br>'.$row['dc_title'].'</div></div>';
 		}
-		//echo "file string=".$FileStr;
-		$sql="SELECT id,dc_title, dc_contributor_author, google_drive_id FROM books WHERE `google_drive_id` IN (".$FileStr.")";
-		$result = mysqli_query($conn,$sql);
-		$Noofrows = mysqli_num_rows($result);
-		if(sizeof($response->files)!=0){
-			while ($row = $result->fetch_array()){	
-				//print_r($row);
-				//echo "<br><br>";
-				$a="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
-				$b=fopen($a, 'r');
-				//echo "b=".$b;
-				$ImageClass="";
-				if ($b) {
-					$ImagePath="https://drive.google.com/thumbnail?id=".$row['google_drive_id'];
-				} else {
-					$ImagePath="img/pdf2.png";
-					$ImageClass="PdfImage";
-				}
-				//echo "image=".$ImagePath;
-				//echo "<br><br>";
-				if($row['dc_contributor_author']){
-					$Author="by ".$row['dc_contributor_author'];
-				}
-				
-				echo '<div class="wholediv"><div class="bookdiv"><img src="'.$ImagePath.'" class="'.$ImageClass.'" onclick='.'"onclick=OpenFile(\''. $row['google_drive_id'].'\');"'.' /><div class="text"><img src="img/pdf2.png">&nbsp;&nbsp;'.$row['id'].'-'.$row['dc_title'].'</div></div><div class="textdiv">'.$row['dc_title'].'<br>'.$Author.'</div></div>';
-			}
-		}
-		$StringValue='"'.$Value.'"';
-		if($Noofrows==0){
-			echo "<script>$('#searchresult').css('height','567px');$('.searchterm').html('Your search ".$StringValue." matches 0 documents.');</script>";
+		
+		if(sizeof($response->files)==0){
+			echo "<script>$('#searchresult').css('height','326px');</script>";
 			echo "<div class='emptydiv'>No Data Found</div>";		
-		}else if($Noofrows<6){
-			echo "<script>$('#searchresult').css('height','567px');$('.searchterm').html('Your search ".$StringValue." matches ".$Noofrows." documents.');</script>";
 		}else{
-			echo "<script>$('#searchresult').css('height','auto');$('.searchterm').html('Your search ".$StringValue." matches ".$Noofrows." documents.');</script>";
+			echo "<script>$('#searchresult').css('height','auto');$('.Header').append(' Search result - ".sizeof($response->files)."');</script>";
 		}
 		
 		$pageToken = $repsonse->pageToken;
 	}else{
-		echo "<script>$('#searchresult').css('height','567px');</script>";
+		echo "<script>$('#searchresult').css('height','326px');</script>";
 	}
 } while ($pageToken != null); 
 ?>

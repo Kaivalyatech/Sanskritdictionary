@@ -21,7 +21,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");	
-						displayresult('author',ui.item.value,"");		
+						displayresult('author',ui.item.value);		
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -40,7 +40,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('subject',ui.item.value,"");		
+						displayresult('subject',ui.item.value);		
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -59,7 +59,7 @@
 						$('#institution').val("");
 						$('#institution').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('title',ui.item.value,"");			
+						displayresult('title',ui.item.value);			
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
@@ -78,14 +78,14 @@
 						$('#title').val("");
 						$('#title').closest('.input').removeClass('input--filled');
 						$('.search').val("");
-						displayresult('institution',ui.item.value,"");	
+						displayresult('institution',ui.item.value);	
 					}
 				}).focus(function () {
 					$(this).autocomplete("search");
 				});
 			});		
 			
-			function displayresult(WhichField,Value,Value1){
+			function displayresult(WhichField,Value){
 				if(Value!=""){
 					$(".modal").css('display','block');
 					if(WhichField=="author"){
@@ -99,7 +99,7 @@
 					}else{
 						var WhichCategory="Date of citation";
 					}
-					//$(".searchterm").html('Your search "'+Value+'"');
+					$(".searchterm").html('Search term - '+WhichCategory+' : "'+Value+'"');
 				}else{
 					$(".searchterm").html('');
 				}
@@ -113,9 +113,8 @@
 					$('#institution').val("");
 					$('#institution').closest('.input').removeClass('input--filled');
 				}
-				//alert("value1--"+Value1);
 				$.ajax({
-					url: 'functions.php?WhichField='+WhichField+'&Value='+encodeURIComponent(Value)+'&Value1='+encodeURIComponent(Value1),
+					url: 'functions.php?WhichField='+WhichField+'&Value='+encodeURIComponent(Value),
 					success: function (data) {
 						//alert(data);
 						$('#searchresult').html(data);
@@ -138,12 +137,7 @@
 				$('#institution').val("");
 				$('#institution').closest('.input').removeClass('input--filled');
 				$('.search').val("");
-				//$('#dateofcitation').val("0");
-				$('#From').css("left","100%");
-				$('.ui-widget-header').css("left","0%");
-				$('.ui-widget-header').css("width","100%");
-				$('#To').css("left","0%");
-				$('#date').val("0 - 11966");
+				$('#dateofcitation').val("0");
 				$('.range-slider__value').html("0");
 				$('#searchresult').html("");
 				$('.searchterm').html("");
@@ -162,8 +156,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a><h3 style="float: left;margin-top: 25px;">DLI Mirror</h3>
-					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value,'')"></div>
+					<a class="navbar-brand topnav" href="" style="width: 108px;"><img src="img/ssd_small.52230aa.gif"></a>
+					<div class="searchdiv"><input type="text" placeholder="Search books" class="search" value="" name="search" onkeyup="displayresult('mainsearch',this.value)"></div>
 					<p class="copyright" style="float:right;font-weight: normal;text-align: right;">A mirror of the Digital Library of India | <a href="http://www.dli.ernet.in/static/dli/copyright.html">DLI Copyright policy </a><img src="img/jaja.7e363e1.png" style="width: 10%;"></p> 
 				</div>
 			   
@@ -189,12 +183,7 @@
 					<div class="searchterm"></div>
 					<div class="content-div">
 						<div class="col-lg-12 categorydiv">
-							
-							<!--<button name="reset" value="Reset"></button>-->
-							<div class="col-lg-8-5" id="searchresult"></div>   
-							<div class="modal"></div>
-							
-							<div class="col-lg-3 filterdiv">
+							<div class="col-lg-3">
 								<p style="color: #000000;font-size: 16px;padding-top: 15px;float: left;margin-right: 10px;">Select search conditions</p>
 								<input value="RESET" style="float: left;" type="button" onclick="reset()">
 								<input type="hidden" name="authorid" id="authorid">
@@ -226,17 +215,15 @@
 										<span class="input__label-content input__label-content--hoshi">Institutions</span>
 									</label>
 								</span>
-								
-								<p style="color: #444;margin-top: 26px;font-size: 17px;padding-left: 2px;margin-bottom: 5px">
-									<label for="date">Date Filter&nbsp;&nbsp;&nbsp;</label>
-									<input id="date" readonly="" style="border:0; color:#f6931f; font-weight:bold;" type="text">
-								</p>
-								<div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="From" style="left: 15%;"></span>
-									<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" id="To" style="left: 60%;"></span>
-								</div>														
+								<p style="color: #444;margin-top: 26px;font-size: 17px;padding-left: 2px;margin-bottom: 5px">Date Filter</p>
+								<div class="range-slider">
+									<input class="range-slider__range" type="range" value="0" min="0" max="<?php echo $row['Maxcitationvalue'];?>" step="1" id="dateofcitation">
+									<span class="range-slider__value">0</span>
+								</div>
 							</div>
-							
+							<!--<button name="reset" value="Reset"></button>-->
+							<div class="col-lg-9" id="searchresult"></div>   
+							<div class="modal"></div>
 						</div>
 						
 					</div>
@@ -244,22 +231,6 @@
 			</div>
 			<!-- /.container -->
 		</div>
-		<script>
-			$( function() {
-				$( "#slider-range" ).slider({
-					range: true,
-					min: 0,
-					max: 11966,
-					values: [ 0, 11966 ],
-					slide: function( event, ui ) {
-						$( "#date" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-						displayresult('rangefilter',ui.values[ 0 ],ui.values[ 1 ]);
-					}
-				});
-				$( "#date" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-					" - " + $( "#slider-range" ).slider( "values", 1 ) );					
-			} );
-		</script>
 		<!-- /.intro-header -->
 		<!-- /.Page Content -->
 
@@ -336,7 +307,7 @@
 					$('#institution').val("");
 					$('#institution').closest('.input').removeClass('input--filled');
 					$('.search').val("");
-					displayresult('rangefilter',this.value,"");
+					displayresult('rangefilter',this.value);
 				});
 			  });
 			};
@@ -346,6 +317,6 @@
 				//alert(Id);
 				window.open('bookpage.php?Id='+Id);
 			}
-		</script>	
+		</script>		
 	</body>
 </html>
